@@ -1,20 +1,8 @@
 from decimal import *
+import random
+from random import shuffle
 
 import numpy as np
-
-class memoize:
-    def __init__(self, fn):
-        self.fn = fn
-        self.memo = {}
-    def __call__(self, *args):
-        if args not in self.memo:
-            self.memo[args] = self.fn(*args)
-        return self.memo[args]
-
-def draw_chain(N):
-    N_array = range(1, (N+1))
-    draw = np.random.choice(N_array, size=N, replace=False)
-    return draw
 
 def chainer(sub, bag, chain):
     chap = chain.append
@@ -25,12 +13,12 @@ def chainer(sub, bag, chain):
     return sub
 
 def sampler(N):
-    sample = np.empty(10000000)
-    for i in range(0, 10000000):
+    sample = np.empty(1000000)
+    for i in range(0, 1000000):
+        draw = range(1, (N+1))
+        random.shuffle(draw)
         subchain_count = 0
         chain = []
-        draw = draw_chain(N)
-        draw = draw.tolist()
         sample[i] = chainer(subchain_count, draw, chain)
     return sample
 
@@ -47,4 +35,3 @@ print "Mean of M for N=32: %(m)s" %{"m": Decimal(m32)}
 print "Standard Deviation of M for N=8: %(s)s" %{"s": s8}
 print "Standard Deviation of M for N=16: %(s)s" %{"s": s16}
 print "Standard Deviation of M for N=32: %(s)s" %{"s": s32}
-
