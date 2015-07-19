@@ -4,22 +4,21 @@ from random import shuffle
 
 import numpy as np
 
-def chainer(sub, bag, chain):
-    chap = chain.append
-    for i in range(0, len(bag)):
-        chap(bag[i])
-        if ((bag[i]-1) not in chain) and ((bag[i]+1) not in chain) :
-            sub += 1
+def chainer(sub, bag, N):
+    chain = [False]*(N+2)
+    for i in xrange(0, N-1):
+        j = bag[i]
+        chain[j] = True
+        if not (chain[j-1] or chain[j+1]):
+            sub+=1
     return sub
 
 def sampler(N):
-    sample = np.empty(1000000)
-    for i in range(0, 1000000):
+    sample = np.empty(10000000)
+    for i in xrange(0, 10000000):
         draw = range(1, (N+1))
         random.shuffle(draw)
-        subchain_count = 0
-        chain = []
-        sample[i] = chainer(subchain_count, draw, chain)
+        sample[i] = chainer(0, draw, N)
     return sample
 
 m8 = np.mean(sampler(8), dtype=np.float64)
